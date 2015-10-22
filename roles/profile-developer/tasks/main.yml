@@ -6,21 +6,32 @@
 - name: install developer brew applications
   homebrew: name={{item}} state=latest
   with_items:
-    - wget
-    - pwgen
-    - xmlstarlet
-    - htop-osx
-    - watch
+    - nmap
     - rsync
-    - git-flow
-    - ant
 
 - name: install developer cask applications
   homebrew_cask: name={{item}} state=present
   with_items:
-    - imageoptim
-    - phpstorm
-    - sequel-pro
-    - java6
-    - java7
+    - atom
+    - dropzone
+    - intellij-idea-ce
     - java
+    - kaleidoscope
+    - pycharm-ce
+    - transmit
+
+- name: install gems
+  become: yes
+  gem: name={{item}} state=present user_install=no
+  with_items:
+    - ronn
+
+- name: clone Brickstertwo repositories
+  git: repo=https://github.com/Brickstertwo/{{item.name}}.git dest={{item.dest}}
+  with_items:
+    - name: git-commands
+      dest: ~/Development/python/git-commands
+    - name: git-template
+      dest: ~/.gittemplate
+    - name: terminal-commands
+      dest: ~/Development/bash/terminal-commands
