@@ -1,0 +1,31 @@
+---
+
+- hosts: 127.0.0.1
+  connection: local
+
+  roles:
+    - profile-all
+    - profile-developer
+    - profile-gamer
+
+  vars:
+    - computername: Air
+    - git_user_name: Marcus Rosenow
+    - git_user_email: Brickstertwo@users.noreply.github.com
+    - osx_defaults:
+      - domain: 'com.apple.dock'
+        key: 'autohide'
+        type: boolean
+        value: true
+      - domain: 'com.apple.dock'
+        key: 'minimize-to-application'
+        type: integer
+        value: 1
+      - domain: 'com.apple.dock'
+        key: 'show-process-indicators'
+        type: boolean
+        value: true
+      - domain: 'NSGlobalDomain'
+        key: 'NSTableViewDefaultSizeMode'
+        type: integer
+        value: 1
