@@ -16,7 +16,13 @@
       with_items:
         - files/.profile
     - name: set OS X defaults
-      shell: defaults write com.apple.sidebarlists systemitems -dict-add ShowHardDisks NO
+      shell: defaults write {{ item }}
+      with_items:
+        - com.apple.sidebarlists systemitems -dict-add ShowHardDisks NO
+        # set tap-to-click
+        - com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
+        - -currentHost NSGlobalDomain com.apple.mouse.tapBehavior -bool true
+        - NSGlobalDomain com.apple.mouse.tapBehavior -bool true
     - name: set nested OS X defaults
       shell: osascript files/scripts/update_finder_plist.scpt
 
