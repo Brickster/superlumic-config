@@ -33,6 +33,10 @@
         key: 'NSNavPanelExpandedStateForSaveMode'
         type: boolean
         value: true
+      - domain: 'NSGlobalDomain'
+        key: 'AppleActionOnDoubleClick'
+        type: string
+        value: 'Minimize'
 
       # finder
       - domain: 'com.apple.finder'
