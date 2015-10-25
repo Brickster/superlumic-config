@@ -15,6 +15,8 @@
         dest: "~"
       with_items:
         - files/.profile
+    - name: set OS X defaults
+      shell: defaults write com.apple.sidebarlists systemitems -dict-add ShowHardDisks NO
     - name: set nested OS X defaults
       shell: osascript files/scripts/update_finder_plist.scpt
 
@@ -23,6 +25,38 @@
     - git_user_name: Marcus Rosenow
     - git_user_email: Brickstertwo@users.noreply.github.com
     - osx_defaults:
+      - domain: 'NSGlobalDomain'
+        key: 'NSTableViewDefaultSizeMode'
+        type: integer
+        value: 1
+      - domain: 'NSGlobalDomain'
+        key: 'NSNavPanelExpandedStateForSaveMode'
+        type: boolean
+        value: true
+
+      # finder
+      - domain: 'com.apple.finder'
+        key: 'ShowTabView'
+        type: boolean
+        value: true
+      - domain: 'com.apple.finder'
+        key: 'ShowRecentTags'
+        type: boolean
+        value: false
+      - domain: 'com.apple.finder'
+        key: 'ShowExternalHardDrivesOnDesktop'
+        type: boolean
+        value: false
+      - domain: 'com.apple.finder'
+        key: 'ShowHardDrivesOnDesktop'
+        type: boolean
+        value: false
+      - domain: 'com.apple.finder'
+        key: 'NewWindowFilePath'
+        type: string
+        value: 'file:///Users/marcusrosenow/'
+
+      # dock
       - domain: 'com.apple.dock'
         key: 'autohide'
         type: boolean
@@ -35,7 +69,28 @@
         key: 'show-process-indicators'
         type: boolean
         value: true
-      - domain: 'NSGlobalDomain'
-        key: 'NSTableViewDefaultSizeMode'
+      - domain: 'com.apple.dock'
+        key: 'tilesize'
+        type: float
+        value: 55
+      - domain: 'com.apple.dock'
+        key: 'wvous-tl-corner'
         type: integer
-        value: 1
+        value: 10
+      - domain: 'com.apple.dock'
+        key: 'wvous-tl-modifier'
+        type: integer
+        value: 0
+      - domain: 'com.apple.dock'
+        key: 'wvous-tr-corner'
+        type: integer
+        value: 4
+      - domain: 'com.apple.dock'
+        key: 'wvous-tr-modifier'
+        type: integer
+        value: 0
+
+      # - domain: 'com.apple.sidebarlists'
+      #   key: 'systemitems'
+      #   type: dict-add
+      #   value: 'ShowHardDisks false'
