@@ -8,6 +8,14 @@
     - profile-developer
     - profile-gamer
 
+  tasks:
+    - name: setup dot files
+      copy:
+        src: "{{item}}"
+        dest: "~"
+      with_items:
+        - files/.profile
+
   vars:
     - computername: Air
     - git_user_name: Marcus Rosenow

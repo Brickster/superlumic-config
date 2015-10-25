@@ -1,0 +1,26 @@
+[filter "media"]
+	required = true
+	clean = git media clean %f
+	smudge = git media smudge %f
+[user]
+	name = Marcus Rosenow
+	email = Brickstertwo@users.noreply.github.com
+[push]
+	default = simple
+[git-state "reflog"]
+	show = False
+	count = 3
+[git-state]
+	format = pretty
+[git-settings "print"]
+[core]
+	editor = atom --wait
+[rebase]
+	autosquash = true
+[init]
+	templatedir = /Users/marcusrosenow/.gittemplate/template
+[alias]
+	graph = log --oneline --graph --all --decorate
+[git-state "log"]
+	count = 10
+[merge]

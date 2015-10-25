@@ -35,3 +35,11 @@
       dest: ~/.gittemplate
     - name: terminal-commands
       dest: ~/Development/bash/terminal-commands
+
+- name: setup git completion files
+  copy:
+    src: "{{item}}"
+    dest: "~"
+  with_items:
+    - files/.git-completion.bash
+    - files/.gitconfig
