@@ -68,7 +68,7 @@
       - domain: 'com.apple.finder'
         key: 'NewWindowFilePath'
         type: string
-        value: 'file:///Users/marcusrosenow/'
+        value: 'file:///Users/marcus/'
 
       # dock
       - domain: 'com.apple.dock'
@@ -103,8 +103,3 @@
         key: 'wvous-tr-modifier'
         type: integer
         value: 0
-
-      # - domain: 'com.apple.sidebarlists'
-      #   key: 'systemitems'
-      #   type: dict-add
-      #   value: 'ShowHardDisks false'
