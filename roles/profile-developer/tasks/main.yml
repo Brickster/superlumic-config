@@ -43,3 +43,10 @@
   with_items:
     - files/.git-completion.bash
     - files/.gitconfig
+
+- name: install python packages via pip
+  become: yes
+  pip: name={{item}}
+  with_items:
+    - colorama
+    - requests
