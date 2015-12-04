@@ -56,6 +56,12 @@
         type: integer
         value: 2
 
+      # clock
+      - domain: 'com.apple.menuextra.clock'
+        key: 'IsAnalog'
+        type: integer
+        value: 1
+
       # finder
       - domain: 'com.apple.finder'
         key: 'ShowTabView'
