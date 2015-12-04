@@ -27,6 +27,8 @@
       with_items:
         # set tap-to-click
         - NSGlobalDomain com.apple.mouse.tapBehavior -int 1
+        # set output sound when changing volume
+        - NSGlobalDomain com.apple.sound.beep.feedback -int 1
     - name: set nested OS X defaults
       shell: osascript files/scripts/update_finder_plist.scpt
 
