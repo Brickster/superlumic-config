@@ -48,6 +48,12 @@
         type: string
         value: 'Minimize'
 
+      # set tabbing between all UI elements
+      - domain: 'NSGlobalDomain'
+        key: 'AppleKeyboardUIMode'
+        type: integer
+        value: 2
+
       # finder
       - domain: 'com.apple.finder'
         key: 'ShowTabView'
