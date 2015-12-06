@@ -50,6 +50,12 @@
         type: string
         value: 'Minimize'
 
+      # screen saver
+      - domain: 'com.apple.screensaver'
+        key: 'askForPassword'
+        type: integer
+        value: 0
+
       # set tabbing between all UI elements
       - domain: 'NSGlobalDomain'
         key: 'AppleKeyboardUIMode'
