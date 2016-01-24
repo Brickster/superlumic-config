@@ -1,0 +1,17 @@
+---
+galaxy_info:
+  author: Marcus Rosenow
+  description: Ansible profile role for servers
+  license: MIT
+  min_ansible_version: 1.2
+  platforms:
+    - name: Darwin
+      versions:
+        - all
+  categories:
+    - system
+dependencies:
+  - roderik.superlumic-computername
+  - roderik.superlumic-cli
+  - roderik.superlumic-homebrew
+  - profile-all

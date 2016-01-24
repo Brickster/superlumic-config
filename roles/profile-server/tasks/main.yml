@@ -1,0 +1,6 @@
+---
+
+- name: install cask applications for servers
+  homebrew_cask: name={{item}} state=present
+  with_items:
+    - no-ip-duc
