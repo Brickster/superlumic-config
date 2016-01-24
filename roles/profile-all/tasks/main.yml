@@ -4,6 +4,7 @@
   homebrew_cask: name={{item}} state=present
   with_items:
     - 1password
+    - atom
     - arq
     - backblaze
     - bartender
@@ -12,19 +13,13 @@
     - daisydisk
     - drobo-dashboard
     - dropbox
-    - fantastical
     - flux
-    - google-chrome
     - hazel
     - keyboard-maestro
     - launchbar
-    - mailbox
-    - omnifocus
-    - omnioutliner
-    - omnipresence
     - pdfpenpro
+    - omnipresence
     - superduper
     - textexpander
     - transmission
-    - vlc
     - xld
