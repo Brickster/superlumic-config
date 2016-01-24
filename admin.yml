@@ -1,0 +1,105 @@
+---
+
+- hosts: 127.0.0.1
+  connection: local
+
+  roles:
+    - profile-all
+    - profile-server
+
+  tasks:
+    - name: setup dot files
+      copy:
+        src: "{{item}}"
+        dest: "~"
+      with_items:
+        - files/.profile
+    - name: set OS X defaults
+      shell: defaults write {{ item }}
+      with_items:
+        - com.apple.sidebarlists systemitems -dict-add ShowHardDisks NO
+        # set tap-to-click
+        - com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -int 1
+        # set default menubar order (bartender will override these but set them anyway)
+        - com.apple.systemuiserver menuExtras -array "/System/Library/CoreServices/Menu Extras/Displays.menu" "/System/Library/CoreServices/Menu Extras/Volume.menu" "/System/Library/CoreServices/Menu Extras/AirPort.menu" "/System/Library/CoreServices/Menu Extras/Battery.menu" "/System/Library/CoreServices/Menu Extras/Clock.menu"
+        # set finder title bar items
+        - com.apple.finder "NSToolbar Configuration Browser" -dict-add 'TB Item Identifiers' '("com.apple.finder.BACK", NSToolbarFlexibleSpaceItem, "com.apple.finder.SWCH", "com.apple.finder.PATH", NSToolbarFlexibleSpaceItem, NSToolbarFlexibleSpaceItem, "com.apple.finder.SRCH")'
+
+    - name: set nested OS X defaults
+      shell: osascript files/scripts/update_finder_plist.scpt
+
+  vars:
+    - computername: Mini
+    - git_user_name: Marcus Rosenow
+    - git_user_email: Brickstertwo@users.noreply.github.com
+    - osx_defaults:
+      - domain: 'NSGlobalDomain'
+        key: 'NSTableViewDefaultSizeMode'
+        type: integer
+        value: 1
+      - domain: 'NSGlobalDomain'
+        key: 'NSNavPanelExpandedStateForSaveMode'
+        type: boolean
+        value: true
+      - domain: 'NSGlobalDomain'
+        key: 'AppleActionOnDoubleClick'
+        type: string
+        value: 'Minimize'
+
+      # screen saver
+      - domain: 'com.apple.screensaver'
+        key: 'askForPassword'
+        type: integer
+        value: 0
+
+      # set tabbing between all UI elements
+      - domain: 'NSGlobalDomain'
+        key: 'AppleKeyboardUIMode'
+        type: integer
+        value: 2
+
+      # clock
+      - domain: 'com.apple.menuextra.clock'
+        key: 'IsAnalog'
+        type: integer
+        value: 1
+
+      # finder
+      - domain: 'com.apple.finder'
+        key: 'ShowTabView'
+        type: boolean
+        value: true
+      - domain: 'com.apple.finder'
+        key: 'ShowRecentTags'
+        type: boolean
+        value: false
+      - domain: 'com.apple.finder'
+        key: 'ShowExternalHardDrivesOnDesktop'
+        type: boolean
+        value: false
+      - domain: 'com.apple.finder'
+        key: 'ShowHardDrivesOnDesktop'
+        type: boolean
+        value: false
+      - domain: 'com.apple.finder'
+        key: 'NewWindowFilePath'
+        type: string
+        value: 'file:///Users/marcus/'
+
+      # dock
+      - domain: 'com.apple.dock'
+        key: 'autohide'
+        type: boolean
+        value: false
+      - domain: 'com.apple.dock'
+        key: 'minimize-to-application'
+        type: boolean
+        value: true
+      - domain: 'com.apple.dock'
+        key: 'show-process-indicators'
+        type: boolean
+        value: true
+      - domain: 'com.apple.dock'
+        key: 'tilesize'
+        type: float
+        value: 55
