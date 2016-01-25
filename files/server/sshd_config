@@ -1,0 +1,18 @@
+# Logging
+# obsoletes QuietMode and FascistLogging
+SyslogFacility AUTHPRIV
+LogLevel INFO
+
+# The default is to check both .ssh/authorized_keys and .ssh/authorized_keys2
+# but this is overridden so installations will only check .ssh/authorized_keys
+AuthorizedKeysFile	.ssh/authorized_keys
+
+# To disable tunneled clear text passwords both PasswordAuthentication and
+# ChallengeResponseAuthentication must be set to "no".
+PasswordAuthentication no
+
+# Change to no to disable s/key passwords
+ChallengeResponseAuthentication no
+
+# override default of no subsystems
+Subsystem	sftp	/usr/libexec/sftp-server

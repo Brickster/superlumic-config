@@ -1,5 +1,11 @@
 ---
 
+- name: ssh config
+  become: yes
+  copy:
+    src: files/server/sshd_config
+    dest: /etc/sshd_config
+
 - name: install cask applications for servers
   homebrew_cask: name={{item}} state=present
   with_items:
