@@ -32,6 +32,8 @@
         - com.apple.systemuiserver menuExtras -array "/System/Library/CoreServices/Menu Extras/Displays.menu" "/System/Library/CoreServices/Menu Extras/Volume.menu" "/System/Library/CoreServices/Menu Extras/AirPort.menu" "/System/Library/CoreServices/Menu Extras/Battery.menu" "/System/Library/CoreServices/Menu Extras/Clock.menu"
         # set finder title bar items
         - com.apple.finder "NSToolbar Configuration Browser" -dict-add 'TB Item Identifiers' '("com.apple.finder.BACK", NSToolbarFlexibleSpaceItem, "com.apple.finder.SWCH", "com.apple.finder.PATH", NSToolbarFlexibleSpaceItem, NSToolbarFlexibleSpaceItem, "com.apple.finder.SRCH")'
+        # set to icon only
+        - com.apple.finder "NSToolbar Configuration Browser" -dict-add 'TB Display Mode' 2
 
     - name: set nested OS X defaults
       shell: osascript files/scripts/update_finder_plist.scpt
