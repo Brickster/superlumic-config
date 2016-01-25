@@ -1,10 +1,23 @@
 ---
 
+- name: ensure /etc/ssh directory exists
+  become: yes
+  file:
+    path: /etc/ssh
+    state: directory
+    owner: root
+    group: wheel
+    mode: 0777
 - name: ssh config
   become: yes
   copy:
     src: files/server/sshd_config
     dest: /etc/sshd_config
+  with_items:
+    - src: files/server/sshd_config
+      dest: /etc/sshd_config
+    - src: files/server/sshd_config
+      dest: /etc/ssh/sshd_config
 
 - name: install cask applications for servers
   homebrew_cask: name={{item}} state=present
