@@ -36,7 +36,10 @@
         - com.apple.finder "NSToolbar Configuration Browser" -dict-add 'TB Display Mode' 2
 
     - name: set nested OS X defaults
-      shell: osascript files/scripts/update_finder_plist.scpt
+      shell: osascript {{item}}
+      with_items:
+        - files/scripts/update_finder_plist.scpt
+        - files/scripts/update_power_plist.scpt
 
   vars:
     - computername: Mini
