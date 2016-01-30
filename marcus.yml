@@ -24,13 +24,13 @@
         - NSGlobalDomain com.apple.mouse.tapBehavior -int 1
     - name: set OS X defaults for current host
       shell: defaults -currentHost write {{ item }}
-        # set to icon only
-        - com.apple.finder "NSToolbar Configuration Browser" -dict-add 'TB Display Mode' 2
       with_items:
         # set tap-to-click
         - NSGlobalDomain com.apple.mouse.tapBehavior -int 1
         # set output sound when changing volume
         - NSGlobalDomain com.apple.sound.beep.feedback -int 1
+        # set to icon only
+        - com.apple.finder "NSToolbar Configuration Browser" -dict-add 'TB Display Mode' 2
     - name: set nested OS X defaults
       shell: osascript files/scripts/update_finder_plist.scpt
 
