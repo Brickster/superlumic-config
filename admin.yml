@@ -34,6 +34,9 @@
         - com.apple.finder "NSToolbar Configuration Browser" -dict-add 'TB Item Identifiers' '("com.apple.finder.BACK", NSToolbarFlexibleSpaceItem, "com.apple.finder.SWCH", "com.apple.finder.PATH", NSToolbarFlexibleSpaceItem, NSToolbarFlexibleSpaceItem, "com.apple.finder.SRCH")'
         # set to icon only
         - com.apple.finder "NSToolbar Configuration Browser" -dict-add 'TB Display Mode' 2
+        # set mouse settings
+        - com.apple.driver.AppleHIDMouse Button2 -int 1
+        - com.apple.driver.AppleHIDMouse ButtonDominance -int 1
 
     - name: set nested OS X defaults
       shell: osascript {{item}}
