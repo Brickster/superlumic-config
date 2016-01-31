@@ -1,8 +1,14 @@
 ---
 
 # some casks are only available in caskroom/versions
+- name: register caskroom/versions is tapped
+  shell: brew tap | egrep "caskroom/versions"
+  register: caskroom_versions_installed
+  changed_when: False
+  failed_when: False
 - name: tap caskroom/versions
   shell: brew tap caskroom/versions
+  when: caskroom_versions_installed.stdout != "caskroom/versions"
 
 - name: install cask applications for all users
   homebrew_cask: name={{item}} state=present
