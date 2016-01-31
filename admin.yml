@@ -24,6 +24,7 @@
         - files/.profile
     - name: set OS X defaults
       shell: defaults write {{ item }}
+      changed_when: False
       with_items:
         - com.apple.sidebarlists systemitems -dict-add ShowHardDisks NO
         # set default menubar order (bartender will override these but set them anyway)
@@ -35,6 +36,7 @@
 
     - name: set nested OS X defaults
       shell: osascript {{item}}
+      changed_when: False
       with_items:
         - files/scripts/update_finder_plist.scpt
 
