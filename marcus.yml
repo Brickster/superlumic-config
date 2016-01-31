@@ -19,14 +19,9 @@
       shell: defaults write {{ item }}
       with_items:
         - com.apple.sidebarlists systemitems -dict-add ShowHardDisks NO
-        # set tap-to-click
-        - com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
         - NSGlobalDomain com.apple.mouse.tapBehavior -int 1
         # set to icon only
         - com.apple.finder "NSToolbar Configuration Browser" -dict-add 'TB Display Mode' 2
-        # set mouse settings
-        - com.apple.driver.AppleHIDMouse Button2 -int 2
-        - com.apple.driver.AppleHIDMouse ButtonDominance -int 1
     - name: set OS X defaults for current host
       shell: defaults -currentHost write {{ item }}
       with_items:
@@ -128,3 +123,19 @@
         key: 'wvous-tr-modifier'
         type: integer
         value: 0
+
+      # set mouse settings
+      - domain: 'com.apple.driver.AppleHIDMouse'
+        key: 'Button2'
+        type: integer
+        value: 2
+      - domain: 'com.apple.driver.AppleHIDMouse'
+        key: 'ButtonDominance'
+        type: integer
+        value: 1
+
+      # trackpad
+      - domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad'
+        key: 'Clicking'
+        type: integer
+        value: 1
