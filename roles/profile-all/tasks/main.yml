@@ -1,5 +1,9 @@
 ---
 
+# some casks are only available in caskroom/versions
+- name: tap caskroom/versions
+  shell: brew tap caskroom/versions
+
 - name: install cask applications for all users
   homebrew_cask: name={{item}} state=present
   with_items:
@@ -17,6 +21,7 @@
     - hazel
     - keyboard-maestro
     - launchbar
+    - pdfpenpro
     - omnipresence
     - superduper
     - textexpander
