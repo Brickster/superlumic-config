@@ -26,17 +26,12 @@
       shell: defaults write {{ item }}
       with_items:
         - com.apple.sidebarlists systemitems -dict-add ShowHardDisks NO
-        # set tap-to-click
-        - com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -int 1
         # set default menubar order (bartender will override these but set them anyway)
         - com.apple.systemuiserver menuExtras -array "/System/Library/CoreServices/Menu Extras/Displays.menu" "/System/Library/CoreServices/Menu Extras/Volume.menu" "/System/Library/CoreServices/Menu Extras/AirPort.menu" "/System/Library/CoreServices/Menu Extras/Battery.menu" "/System/Library/CoreServices/Menu Extras/Clock.menu"
         # set finder title bar items
         - com.apple.finder "NSToolbar Configuration Browser" -dict-add 'TB Item Identifiers' '("com.apple.finder.BACK", NSToolbarFlexibleSpaceItem, "com.apple.finder.SWCH", "com.apple.finder.PATH", NSToolbarFlexibleSpaceItem, NSToolbarFlexibleSpaceItem, "com.apple.finder.SRCH")'
         # set to icon only
         - com.apple.finder "NSToolbar Configuration Browser" -dict-add 'TB Display Mode' 2
-        # set mouse settings
-        - com.apple.driver.AppleHIDMouse Button2 -int 2
-        - com.apple.driver.AppleHIDMouse ButtonDominance -int 1
 
     - name: set nested OS X defaults
       shell: osascript {{item}}
@@ -118,3 +113,19 @@
         key: 'tilesize'
         type: float
         value: 55
+
+      # set mouse settings
+      - domain: 'com.apple.driver.AppleHIDMouse'
+        key: 'Button2'
+        type: integer
+        value: 2
+      - domain: 'com.apple.driver.AppleHIDMouse'
+        key: 'ButtonDominance'
+        type: integer
+        value: 1
+
+      # trackpad
+      - domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad'
+        key: 'Clicking'
+        type: integer
+        value: 1
