@@ -42,7 +42,6 @@
       shell: osascript {{item}}
       with_items:
         - files/scripts/update_finder_plist.scpt
-        - files/scripts/update_power_plist.scpt
 
   vars:
     - computername: Mini
