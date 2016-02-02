@@ -24,3 +24,7 @@
   with_items:
     - no-ip-duc
     - plex-media-server
+
+- name: set desktop background
+  shell: osascript -e 'tell application "Finder" to set desktop picture to POSIX file "/Library/Desktop Pictures/Solid Colors/Solid Aqua Graphite.png"'
+  changed_when: False
