@@ -36,12 +36,15 @@
     - name: terminal-commands
       dest: ~/Development/bash/terminal-commands
 
-- name: setup git completion files
+# install git completion
+- name: register .git-completion.bash stat
+  stat: ~/.git-completion.bash
+  register: git_completion_stat
+- name: install git-completion.bash
   copy:
-    src: "{{item}}"
+    src: "/files/.git-completion.bash"
     dest: "~"
-  with_items:
-    - files/.git-completion.bash
+  when: not git_completion_stat.stat.exists
 
 # install .gitconfig
 - name: register .config stat
