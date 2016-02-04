@@ -42,7 +42,16 @@
     dest: "~"
   with_items:
     - files/.git-completion.bash
-    - files/.gitconfig
+
+# install .gitconfig
+- name: register .config stat
+  stat: ~/.config
+  register: config_stat
+- name: install .gitconfig
+  template:
+    src: '/templates/gitconfig.j2'
+    dest: '~/.gitconfig'
+  when: not config_stat.stat.exists
 
 - name: install python packages via pip
   become: yes
