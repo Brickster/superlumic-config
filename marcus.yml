@@ -32,6 +32,18 @@
     - name: set nested OS X defaults
       shell: osascript files/scripts/update_finder_plist.scpt
 
+    - name: register Mac App Store applications
+      shell: mas list
+      register: mas_list
+      changed_when: False
+
+    - name: install Mac App Store applications
+      shell: mas install {{ item }}
+      when: "'{{ item }}' not in mas_list.stdout"
+      with_items:
+        - 1026349850  # copied
+        - 1053031090  # boxy
+
   vars:
     - computername: Air
     - git_user_name: Marcus Rosenow

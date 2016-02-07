@@ -10,6 +10,11 @@
   shell: brew tap caskroom/versions
   when: caskroom_versions_installed.stdout != "caskroom/versions"
 
+- name: install brew applications for all users
+  homebrew: name={{item}} state=latest
+  with_items:
+    - argon/mas/mas
+
 - name: install cask applications for all users
   homebrew_cask: name={{item}} state=present
   with_items:
