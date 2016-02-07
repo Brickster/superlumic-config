@@ -39,7 +39,7 @@
 
 # install git completion
 - name: register .git-completion.bash stat
-  stat: ~/.git-completion.bash
+  stat: path=~/.git-completion.bash
   register: git_completion_stat
 - name: install git-completion.bash
   copy:
@@ -48,12 +48,12 @@
   when: not git_completion_stat.stat.exists
 
 # install .gitconfig
-- name: register .config stat
-  stat: ~/.config
+- name: register .gitconfig stat
+  stat: path=~/.gitconfig
   register: config_stat
 - name: install .gitconfig
   template:
-    src: '/templates/gitconfig.j2'
+    src: 'gitconfig.j2'
     dest: '~/.gitconfig'
   when: not config_stat.stat.exists
 
