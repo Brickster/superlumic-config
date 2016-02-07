@@ -41,8 +41,17 @@
       shell: mas install {{ item }}
       when: "'{{ item }}' not in mas_list.stdout"
       with_items:
-        - 1026349850  # copied
         - 1053031090  # boxy
+        - 402355593   # chronicle
+        - 1026349850  # copied
+        - 1055511498  # day one
+        - 924726344   # deliveries
+        - 975937182   # fantastical
+        - 568494494   # pocket
+        - 880001334   # reeder
+        - 446107677   # screens
+        - 577085396   # unclutter
+        - 497799835   # xcode
 
   vars:
     - computername: Air
