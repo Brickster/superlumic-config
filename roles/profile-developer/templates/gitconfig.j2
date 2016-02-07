@@ -18,9 +18,8 @@
 [rebase]
 	autosquash = true
 [init]
-	templatedir = /Users/marcusrosenow/.gittemplate/template
+	templatedir = {{ lookup('env', 'HOME') }}/.gittemplate/template
 [alias]
 	graph = log --oneline --graph --all --decorate
 [git-state "log"]
 	count = 10
-[merge]
