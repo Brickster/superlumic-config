@@ -43,7 +43,7 @@
   register: git_completion_stat
 - name: install git-completion.bash
   copy:
-    src: "/files/.git-completion.bash"
+    src: ".git-completion.bash"
     dest: "~"
   when: not git_completion_stat.stat.exists
 
