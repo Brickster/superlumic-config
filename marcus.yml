@@ -161,3 +161,11 @@
         key: 'Clicking'
         type: integer
         value: 1
+      - domain: 'com.apple.AppleMultitouchTrackpad'
+        key: 'Clicking'
+        type: integer
+        value: 1
+      - domain: 'com.apple.dock'
+        key: 'showAppExposeGestureEnabled'
+        type: integer
+        value: 1
