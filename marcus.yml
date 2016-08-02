@@ -30,7 +30,7 @@
         # set output sound when changing volume
         - NSGlobalDomain com.apple.sound.beep.feedback -int 1
     - name: set nested OS X defaults
-      shell: osascript files/scripts/update_finder_plist.scpt
+      shell: osascript config/files/scripts/update_finder_plist.scpt
 
     - name: register Mac App Store applications
       shell: mas list
