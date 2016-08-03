@@ -13,5 +13,5 @@ galaxy_info:
 dependencies:
   - roderik.superlumic-computername
   - roderik.superlumic-cli
-  - roderik.superlumic-homebrew
+  - brickstertwo.superlumic-homebrew
   - profile-all
