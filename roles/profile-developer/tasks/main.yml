@@ -47,15 +47,17 @@
     dest: "~"
   when: not git_completion_stat.stat.exists
 
-# install .gitconfig
-- name: register .gitconfig stat
-  stat: path=~/.gitconfig
-  register: config_stat
+# install .gitconfig (assume it hasn't been if core.editor isn't set)
+- name: register git core.editor
+  shell: git config --global core.editor
+  register: git_core_editor
+  changed_when: False
+  ignore_errors: yes
 - name: install .gitconfig
   template:
     src: 'gitconfig.j2'
     dest: '~/.gitconfig'
-  when: not config_stat.stat.exists
+  when: not git_core_editor.stdout
 
 - name: install python packages via pip
   become: yes
