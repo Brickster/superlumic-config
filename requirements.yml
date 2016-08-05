@@ -3,11 +3,8 @@
 - src: https://github.com/Brickstertwo/ansible-role-homebrew.git
   name: brickstertwo.superlumic-homebrew
 
-- src: https://github.com/superlumic/ansible-role-osx-defaults.git
-  name: roderik.superlumic-osx-defaults
-
-- src: https://github.com/superlumic/ansible-role-computername.git
-  name: roderik.superlumic-computername
+- src: https://github.com/Brickstertwo/ansible-role-computername.git
+  name: brickstertwo.superlumic-computername
 
 - src: https://github.com/Brickstertwo/ansible-role-cli.git
   name: brickstertwo.superlumic-cli

@@ -11,5 +11,5 @@ galaxy_info:
   categories:
     - system
 dependencies:
-  - roderik.superlumic-computername
+  - brickstertwo.superlumic-computername
   - brickstertwo.superlumic-homebrew
