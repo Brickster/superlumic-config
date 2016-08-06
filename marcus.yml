@@ -22,6 +22,7 @@
       shell: /usr/libexec/PlistBuddy -c "print :systemitems:ShowHardDisks" ~/Library/Preferences/com.apple.sidebarlists.plist
       register: showharddisks_default
       changed_when: false
+      ignore_errors: yes
     - name: set ShowHardDisks
       shell: /usr/libexec/PlistBuddy -c "set :systemitems:ShowHardDisks NO" ~/Library/Preferences/com.apple.sidebarlists.plist
       when: showharddisks_default.stdout != 'NO'
@@ -31,6 +32,7 @@
       shell: /usr/libexec/PlistBuddy -c "print :'NSToolbar Configuration Browser:TB Display Mode'" ~/Library/Preferences/com.apple.finder.plist
       register: tbdisplaymode_default
       changed_when: false
+      ignore_errors: yes
     - name: set toolbar display mode
       shell: /usr/libexec/PlistBuddy -c "set :'NSToolbar Configuration Browser:TB Display Mode' 2" ~/Library/Preferences/com.apple.finder.plist
       when: tbdisplaymode_default.stdout != '2'
