@@ -175,6 +175,29 @@
       shell: osascript config/files/scripts/update_finder_plist.scpt
       changed_when: false
 
+    # set finder toolbar items
+    - name: check for toolbar item settings
+      shell: /usr/libexec/PlistBuddy -c "print :'NSToolbar Configuration Browser:TB Item Identifiers'" ~/Library/Preferences/com.apple.finder.plist
+      register: toolbar_check_result
+      ignore_errors: yes
+    - name: add toolbar item settings array
+      shell: /usr/libexec/PlistBuddy -c "add :'NSToolbar Configuration Browser:TB Item Identifiers' array" ~/Library/Preferences/com.apple.finder.plist
+      when: toolbar_check_result.rc
+    - name: add toolbar item setting entries
+      shell: /usr/libexec/PlistBuddy -c "add :'NSToolbar Configuration Browser:TB Item Identifiers:' string '{{ item }}'" ~/Library/Preferences/com.apple.finder.plist
+      when: toolbar_check_result.rc
+      with_items:
+        - com.apple.finder.BACK
+        - NSToolbarFlexibleSpaceItem
+        - com.apple.finder.SWCH
+        - com.apple.finder.PATH
+        - NSToolbarSpaceItem
+        - com.apple.finder.SHAR
+        - com.apple.finder.ACTN
+        - NSToolbarFlexibleSpaceItem
+        - NSToolbarFlexibleSpaceItem
+        - com.apple.finder.SRCH
+
     - name: register Mac App Store applications
       shell: mas list
       register: mas_list
