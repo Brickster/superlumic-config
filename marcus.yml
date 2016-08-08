@@ -9,13 +9,19 @@
     - profile-gamer
     - profile-user
 
+  vars:
+    - computername: Air
+    - git_user_name: Marcus Rosenow
+    - git_user_email: Brickstertwo@users.noreply.github.com
+
   tasks:
-    - name: setup dot files
-      copy:
-        src: "{{item}}"
-        dest: "~"
-      with_items:
-        - files/.profile
+    # setup bash profile
+    - name: register .profile stat
+      stat: path="~/.profile"
+      register: profile_stat
+    - name: setup .profile
+      copy: src="files/.profile" dest="~"
+      when: not profile_stat.stat.exists
 
     # set finder to not show hard disks
     - name: register ShowHardDisks
@@ -228,8 +234,3 @@
         - 446107677   # screens
         - 577085396   # unclutter
         - 497799835   # xcode
-
-  vars:
-    - computername: Air
-    - git_user_name: Marcus Rosenow
-    - git_user_email: Brickstertwo@users.noreply.github.com
