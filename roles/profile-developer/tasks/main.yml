@@ -3,8 +3,11 @@
 - name: install developer brew applications
   homebrew: name={{item}} state=latest
   with_items:
+    - htop
     - nmap
     - rsync
+    - tccutil
+    - the_silver_searcher
 
 - name: install developer cask applications
   homebrew_cask: name={{item}} state=present
