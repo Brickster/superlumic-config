@@ -268,6 +268,35 @@
       shell: /usr/libexec/PlistBuddy -c "add :'NSToolbar Configuration Browser:TB Display Mode' integer 2" ~/Library/Preferences/com.apple.finder.plist
       when: tbdisplaymode_default.stdout != '2'
 
+    # set finder icon view settings
+    - name: set finder icon view settings
+      shell: /usr/libexec/PlistBuddy -c "set :'StandardViewSettings:IconViewSettings:{{ item.property }}' {{ item.value }}" ~/Library/Preferences/com.apple.finder.plist
+      with_items:
+        - property: gridSpacing
+          value: 30
+        - property: textSize
+          value: 12
+        - property: showItemInfo
+          value: false
+        - property: iconSize
+          value: 44
+        # 'name' really maps to 'sort by'
+        - property: arrangeBy
+          value: name
+
+    # set finder desktop view settings
+    - name: set finder desktop view settings
+      shell: /usr/libexec/PlistBuddy -c "set :'DesktopViewSettings:IconViewSettings:{{ item.property }}' {{ item.value }}" ~/Library/Preferences/com.apple.finder.plist
+      with_items:
+        - property: gridSpacing
+          value: 25
+        - property: textSize
+          value: 12
+        - property: iconSize
+          value: 44
+        - property: arrangeBy
+          value: grid
+
     - name: set OS X defaults
       osx_defaults: domain={{ item.domain }} key={{ item.key }} type={{ item.type }} value={{ item.value }}
       with_items:
@@ -401,10 +430,6 @@
           key: com.apple.mouse.tapBehavior
           type: integer
           value: 1
-
-    - name: set nested OS X defaults
-      shell: osascript config/files/scripts/update_finder_plist.scpt
-      changed_when: false
 
     - name: register Mac App Store applications
       shell: mas list
