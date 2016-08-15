@@ -15,6 +15,28 @@
     - git_user_email: Brickstertwo@users.noreply.github.com
 
   tasks:
+    # set profile picture
+    - name: register Profile picture
+      shell: dscl . -read "{{ lookup('env', 'HOME') }}" Picture
+      register: profile_picture
+      changed_when: profile_picture.stdout.find('laptop.png') == -1
+    - name: install profile picture
+      become: true
+      copy:
+        src: 'files/laptop.png'
+        dest: '/Library/User Pictures'
+      when: profile_picture|changed
+    - name: delete JPEGPhoto setting
+      shell: dscl . -delete "{{ lookup('env', 'HOME') }}" JPEGPhoto
+      when: profile_picture|changed
+    - name: delete Picture setting
+      shell: dscl . -delete "{{ lookup('env', 'HOME') }}" Picture
+      when: profile_picture|changed
+    - name: set Picture setting
+      become: true
+      shell: dscl . -create "{{ lookup('env', 'HOME') }}" Picture '/Library/User Pictures/laptop.png'
+      when: profile_picture|changed
+
     - name: create SSH directory
       file: path="~/.ssh" state=directory
     - name: register github_air_rsa stat
