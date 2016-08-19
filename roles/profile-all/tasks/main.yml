@@ -2,7 +2,7 @@
 - name: install brew applications for all users
   homebrew: name={{item}} state=latest
   with_items:
-    - argon/mas/mas
+    - mas
 
 - name: install cask applications for all users
   homebrew_cask: name={{item}} state=present
