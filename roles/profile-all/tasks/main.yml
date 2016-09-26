@@ -2,6 +2,7 @@
 - name: install brew applications for all users
   homebrew: name={{item}} state=latest
   with_items:
+    - mackup
     - mas
 
 - name: install cask applications for all users
