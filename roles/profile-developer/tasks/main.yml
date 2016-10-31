@@ -65,5 +65,7 @@
   with_items:
     - colorama
     - isodate
+    - mock
+    - nose
     - requests
     - tabulate
