@@ -238,6 +238,14 @@
       copy: src="files/.profile" dest="~"
       when: not profile_stat.stat.exists
 
+    # install mackup config
+    - name: register .mackup.cfg stat
+      stat: path="~/.mackup.cfg"
+      register: mackupcfg_stat
+    - name: setup .mackup.cfg
+      copy: src="files/.mackup.cfg" dest="~"
+      when: not mackupcfg_stat.stat.exists
+
     # set finder to not show hard disks
     - name: register ShowHardDisks
       shell: /usr/libexec/PlistBuddy -c "print :systemitems:ShowHardDisks" ~/Library/Preferences/com.apple.sidebarlists.plist
