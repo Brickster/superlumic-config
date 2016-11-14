@@ -484,3 +484,9 @@
         - 446107677   # screens
         - 577085396   # unclutter
         - 497799835   # xcode
+
+    - name: clone third party git repositories
+      git: repo={{item.repo}}.git dest={{item.dest}}
+      with_items:
+        - repo: https://github.com/Cortys/comic-backup.git
+          dest: ~/Development/third-party/comics-backup
