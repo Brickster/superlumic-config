@@ -497,9 +497,8 @@
       when: "'{{ item }}' not in mas_list.stdout"
       with_items:
         - 1107421413  # 1blocker
-        - 1053031090  # boxy
         - 402355593   # chronicle
-        - 1059655371  # cloudmagic
+        - 1059655371  # newton
         - 1026349850  # copied
         - 1055511498  # day one
         - 924726344   # deliveries
