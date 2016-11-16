@@ -69,5 +69,6 @@
     - isodate
     - mock
     - nose
+    - python-pushover
     - requests
     - tabulate
