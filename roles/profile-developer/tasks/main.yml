@@ -65,7 +65,9 @@
   become: yes
   pip: name={{item}}
   with_items:
+    - codacy-coverage
     - colorama
+    - coverage
     - isodate
     - mock
     - nose
