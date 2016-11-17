@@ -1,13 +1,42 @@
 ---
 
-- hosts: 127.0.0.1
+- hosts: all
   connection: local
 
   roles:
     - profile-all
     - profile-server
 
+  vars:
+    - computername: Mini
+    - git_user_name: Marcus Rosenow
+    - git_user_email: Brickstertwo@users.noreply.github.com
+
   tasks:
+
+    # set profile picture
+    - name: register Profile picture
+      shell: dscl . -read "{{ lookup('env', 'HOME') }}" Picture
+      register: profile_picture
+      changed_when: profile_picture.stdout.find('laptop.png') == -1
+    - name: install profile picture
+      become: true
+      copy:
+        src: 'files/laptop.png'
+        dest: '/Library/User Pictures'
+      when: profile_picture|changed
+    - name: delete JPEGPhoto setting
+      shell: dscl . -delete "{{ lookup('env', 'HOME') }}" JPEGPhoto
+      when: profile_picture|changed
+    - name: delete Picture setting
+      shell: dscl . -delete "{{ lookup('env', 'HOME') }}" Picture
+      when: profile_picture|changed
+    - name: set Picture setting
+      become: true
+      shell: dscl . -create "{{ lookup('env', 'HOME') }}" Picture '/Library/User Pictures/laptop.png'
+      when: profile_picture|changed
+
+    # set authorized SSH keys
     - name: ensure .ssh directory exists
       file:
         path: ~/.ssh
@@ -22,112 +51,252 @@
         dest: "~"
       with_items:
         - files/.profile
+
+    # install pushover config
+    - name: register .pushoverrc stat
+      stat: path="~/.pushoverrc"
+      register: pushoverrc_stat
+    - name: install pushover config
+      copy:
+        dest: ~/.pushoverrc
+        mode: 0600
+        content: |
+          $ANSIBLE_VAULT;1.1;AES256
+          61303363653566643832353138343331333231656265373838666336666235646238396433653531
+          3835653162643539656565326430323330656165653966350a383864643564383039373932336535
+          31336238356137353130386565313337306132313633643166303961336230353934666636303863
+          3333643535393532630a363530353937343438323435333630313937363765626332326138656464
+          66396537366664343264396263646139376231386135343533306566363262356231333661653163
+          39613537336161653334336637643937666139313162353739323366613261326563613738313934
+          34613262646434356437313164366633363366313731373962626163666137306638613739323761
+          36343034353736383538373062373165646439353434393937373764666563653032353532376634
+          66616139326233393963323030323831646138396339316336386435393132616234393235326231
+          30663939363032656538653537366234326236333366646337303562383837376635616237643563
+          35393437316665386132326662626332613531303366363137306236633861323562306230326630
+          66326263646464666263393366636662613131653562643863666333373363626639623461633238
+          36333766333036303736316530663735613030666262643834653338356462323631386335663738
+          6131346534363332626632643461653532623963613934393831
+      when: not pushoverrc_stat.stat.exists
+
+    # setup bash profile
+    - name: register .profile stat
+      stat: path="~/.profile"
+      register: profile_stat
+    - name: setup .profile
+      copy: src="files/.profile" dest="~"
+      when: not profile_stat.stat.exists
+
+    # set finder to not show hard disks
+    - name: register ShowHardDisks
+      shell: /usr/libexec/PlistBuddy -c "print :systemitems:ShowHardDisks" ~/Library/Preferences/com.apple.sidebarlists.plist
+      register: showharddisks_default
+      changed_when: false
+      ignore_errors: yes
+    - name: set ShowHardDisks
+      shell: /usr/libexec/PlistBuddy -c "set :systemitems:ShowHardDisks NO" ~/Library/Preferences/com.apple.sidebarlists.plist
+      when: showharddisks_default.stdout != 'NO'
+
+    # set finder toolbar items
+    - name: check for toolbar configuration dict
+      shell: /usr/libexec/PlistBuddy -c "print :'NSToolbar Configuration Browser'" ~/Library/Preferences/com.apple.finder.plist
+      register: toolbar_configuration_check_result
+      changed_when: false
+      ignore_errors: yes
+    - name: add toolbar configuration dict
+      shell: /usr/libexec/PlistBuddy -c "add :'NSToolbar Configuration Browser' dict" ~/Library/Preferences/com.apple.finder.plist
+      when: toolbar_configuration_check_result.rc
+    - name: check for toolbar item settings array
+      shell: /usr/libexec/PlistBuddy -c "print :'NSToolbar Configuration Browser:TB Item Identifiers'" ~/Library/Preferences/com.apple.finder.plist
+      register: toolbar_check_result
+      changed_when: false
+      ignore_errors: yes
+    - name: add toolbar item settings array
+      shell: /usr/libexec/PlistBuddy -c "add :'NSToolbar Configuration Browser:TB Item Identifiers' array" ~/Library/Preferences/com.apple.finder.plist
+      when: toolbar_check_result.rc
+    - name: add toolbar item setting entries
+      shell: /usr/libexec/PlistBuddy -c "add :'NSToolbar Configuration Browser:TB Item Identifiers:' string '{{ item }}'" ~/Library/Preferences/com.apple.finder.plist
+      when: toolbar_check_result.rc
+      with_items:
+        - com.apple.finder.BACK
+        - NSToolbarFlexibleSpaceItem
+        - com.apple.finder.SWCH
+        - com.apple.finder.PATH
+        - NSToolbarSpaceItem
+        - com.apple.finder.SHAR
+        - com.apple.finder.ACTN
+        - NSToolbarFlexibleSpaceItem
+        - NSToolbarFlexibleSpaceItem
+        - com.apple.finder.SRCH
+
+    # set finder toolbar items to item only
+    - name: register toolbar display mode
+      shell: /usr/libexec/PlistBuddy -c "print :'NSToolbar Configuration Browser:TB Display Mode'" ~/Library/Preferences/com.apple.finder.plist
+      register: tbdisplaymode_default
+      changed_when: false
+      ignore_errors: yes
+    - name: set toolbar display mode
+      shell: /usr/libexec/PlistBuddy -c "add :'NSToolbar Configuration Browser:TB Display Mode' integer 2" ~/Library/Preferences/com.apple.finder.plist
+      when: tbdisplaymode_default.stdout != '2'
+
+    # set finder icon view settings
+    - name: set finder icon view settings
+      shell: /usr/libexec/PlistBuddy -c "set :'StandardViewSettings:IconViewSettings:{{ item.property }}' {{ item.value }}" ~/Library/Preferences/com.apple.finder.plist
+      with_items:
+        - property: gridSpacing
+          value: 30
+        - property: textSize
+          value: 12
+        - property: showItemInfo
+          value: false
+        - property: iconSize
+          value: 44
+        # 'name' really maps to 'sort by'
+        - property: arrangeBy
+          value: name
+
+    # set finder desktop view settings
+    - name: set finder desktop view settings
+      shell: /usr/libexec/PlistBuddy -c "set :'DesktopViewSettings:IconViewSettings:{{ item.property }}' {{ item.value }}" ~/Library/Preferences/com.apple.finder.plist
+      with_items:
+        - property: gridSpacing
+          value: 25
+        - property: textSize
+          value: 12
+        - property: iconSize
+          value: 44
+        - property: arrangeBy
+          value: grid
+
     - name: set OS X defaults
-      shell: defaults write {{ item }}
-      changed_when: False
+      osx_defaults: domain={{ item.domain }} key={{ item.key }} type={{ item.type }} value={{ item.value }}
       with_items:
-        - com.apple.sidebarlists systemitems -dict-add ShowHardDisks NO
-        # set default menubar order (bartender will override these but set them anyway)
-        - com.apple.systemuiserver menuExtras -array "/System/Library/CoreServices/Menu Extras/Displays.menu" "/System/Library/CoreServices/Menu Extras/Volume.menu" "/System/Library/CoreServices/Menu Extras/AirPort.menu" "/System/Library/CoreServices/Menu Extras/Battery.menu" "/System/Library/CoreServices/Menu Extras/Clock.menu"
-        # set finder title bar items
-        - com.apple.finder "NSToolbar Configuration Browser" -dict-add 'TB Item Identifiers' '("com.apple.finder.BACK", NSToolbarFlexibleSpaceItem, "com.apple.finder.SWCH", "com.apple.finder.PATH", NSToolbarFlexibleSpaceItem, NSToolbarFlexibleSpaceItem, "com.apple.finder.SRCH")'
-        # set to icon only
-        - com.apple.finder "NSToolbar Configuration Browser" -dict-add 'TB Display Mode' 2
+        # set tap-to-click
+        - domain: NSGlobalDomain
+          key: com.apple.mouse.tapBehavior
+          type: integer
+          value: 1
+        # set output sound when changing volume
+        - domain: NSGlobalDomain
+          key: com.apple.sound.beep.feedback
+          type: integer
+          value: 1
 
-    - name: set nested OS X defaults
-      shell: osascript {{item}}
-      changed_when: False
+        - domain: 'NSGlobalDomain'
+          key: 'NSTableViewDefaultSizeMode'
+          type: integer
+          value: 1
+        - domain: 'NSGlobalDomain'
+          key: 'NSNavPanelExpandedStateForSaveMode'
+          type: boolean
+          value: true
+        - domain: 'NSGlobalDomain'
+          key: 'AppleActionOnDoubleClick'
+          type: string
+          value: 'Minimize'
+
+        # screen saver
+        - domain: 'com.apple.screensaver'
+          key: 'askForPassword'
+          type: integer
+          value: 0
+
+        # set tabbing between all UI elements
+        - domain: 'NSGlobalDomain'
+          key: 'AppleKeyboardUIMode'
+          type: integer
+          value: 2
+
+        # clock
+        - domain: 'com.apple.menuextra.clock'
+          key: 'IsAnalog'
+          type: integer
+          value: 1
+
+        # finder
+        - domain: 'com.apple.finder'
+          key: 'ShowTabView'
+          type: boolean
+          value: true
+        - domain: 'com.apple.finder'
+          key: 'ShowRecentTags'
+          type: boolean
+          value: false
+        - domain: 'com.apple.finder'
+          key: 'ShowExternalHardDrivesOnDesktop'
+          type: boolean
+          value: false
+        - domain: 'com.apple.finder'
+          key: 'ShowHardDrivesOnDesktop'
+          type: boolean
+          value: false
+        - domain: 'com.apple.finder'
+          key: 'NewWindowFilePath'
+          type: string
+          value: 'file:///Users/marcus/'
+
+        # dock
+        - domain: 'com.apple.dock'
+          key: 'autohide'
+          type: boolean
+          value: true
+        - domain: 'com.apple.dock'
+          key: 'minimize-to-application'
+          type: boolean
+          value: true
+        - domain: 'com.apple.dock'
+          key: 'show-process-indicators'
+          type: boolean
+          value: true
+        - domain: 'com.apple.dock'
+          key: 'tilesize'
+          type: float
+          value: 55
+        - domain: 'com.apple.dock'
+          key: 'wvous-tl-corner'
+          type: integer
+          value: 10
+        - domain: 'com.apple.dock'
+          key: 'wvous-tl-modifier'
+          type: integer
+          value: 0
+        - domain: 'com.apple.dock'
+          key: 'wvous-tr-corner'
+          type: integer
+          value: 4
+        - domain: 'com.apple.dock'
+          key: 'wvous-tr-modifier'
+          type: integer
+          value: 0
+
+        # set mouse settings
+        - domain: 'com.apple.driver.AppleHIDMouse'
+          key: 'Button2'
+          type: integer
+          value: 2
+        - domain: 'com.apple.driver.AppleHIDMouse'
+          key: 'ButtonDominance'
+          type: integer
+          value: 1
+
+        # trackpad
+        - domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad'
+          key: 'Clicking'
+          type: integer
+          value: 1
+        - domain: 'com.apple.AppleMultitouchTrackpad'
+          key: 'Clicking'
+          type: integer
+          value: 1
+        - domain: 'com.apple.dock'
+          key: 'showAppExposeGestureEnabled'
+          type: integer
+          value: 1
+
+    - name: set OS X defaults for currentHost
+      osx_defaults: host=currentHost domain={{ item.domain }} key={{ item.key }} type={{ item.type }} value={{ item.value }}
       with_items:
-        - files/scripts/update_finder_plist.scpt
-
-  vars:
-    - computername: Mini
-    - git_user_name: Marcus Rosenow
-    - git_user_email: Brickstertwo@users.noreply.github.com
-    - osx_defaults:
-      - domain: 'NSGlobalDomain'
-        key: 'NSTableViewDefaultSizeMode'
-        type: integer
-        value: 1
-      - domain: 'NSGlobalDomain'
-        key: 'NSNavPanelExpandedStateForSaveMode'
-        type: boolean
-        value: true
-      - domain: 'NSGlobalDomain'
-        key: 'AppleActionOnDoubleClick'
-        type: string
-        value: 'Minimize'
-
-      # screen saver
-      - domain: 'com.apple.screensaver'
-        key: 'askForPassword'
-        type: integer
-        value: 0
-
-      # set tabbing between all UI elements
-      - domain: 'NSGlobalDomain'
-        key: 'AppleKeyboardUIMode'
-        type: integer
-        value: 2
-
-      # clock
-      - domain: 'com.apple.menuextra.clock'
-        key: 'IsAnalog'
-        type: integer
-        value: 1
-
-      # finder
-      - domain: 'com.apple.finder'
-        key: 'ShowTabView'
-        type: boolean
-        value: true
-      - domain: 'com.apple.finder'
-        key: 'ShowRecentTags'
-        type: boolean
-        value: false
-      - domain: 'com.apple.finder'
-        key: 'ShowExternalHardDrivesOnDesktop'
-        type: boolean
-        value: false
-      - domain: 'com.apple.finder'
-        key: 'ShowHardDrivesOnDesktop'
-        type: boolean
-        value: false
-      - domain: 'com.apple.finder'
-        key: 'NewWindowFilePath'
-        type: string
-        value: 'file:///Users/marcus/'
-
-      # dock
-      - domain: 'com.apple.dock'
-        key: 'autohide'
-        type: boolean
-        value: false
-      - domain: 'com.apple.dock'
-        key: 'minimize-to-application'
-        type: boolean
-        value: true
-      - domain: 'com.apple.dock'
-        key: 'show-process-indicators'
-        type: boolean
-        value: true
-      - domain: 'com.apple.dock'
-        key: 'tilesize'
-        type: float
-        value: 55
-
-      # set mouse settings
-      - domain: 'com.apple.driver.AppleHIDMouse'
-        key: 'Button2'
-        type: integer
-        value: 2
-      - domain: 'com.apple.driver.AppleHIDMouse'
-        key: 'ButtonDominance'
-        type: integer
-        value: 1
-
-      # trackpad
-      - domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad'
-        key: 'Clicking'
-        type: integer
-        value: 1
+        # set tap-to-click
+        - domain: NSGlobalDomain
+          key: com.apple.mouse.tapBehavior
+          type: integer
+          value: 1
