@@ -486,6 +486,11 @@
           key: com.apple.mouse.tapBehavior
           type: integer
           value: 1
+        # set button/menu appearance to "Graphite"
+        - domain: NSGlobalDomain
+          key: AppleAquaColorVariant
+          type: integer
+          value: 6
 
     - name: register Mac App Store applications
       shell: mas list
