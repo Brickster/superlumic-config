@@ -30,7 +30,7 @@
     - ronn
 
 - name: clone Brickstertwo repositories
-  git: repo=https://github.com/Brickstertwo/{{item.name}}.git dest={{item.dest}}
+  git: repo=https://github.com/Brickstertwo/{{item.name}}.git dest={{item.dest}} update=no
   with_items:
     - name: git-commands
       dest: ~/Development/python/git-commands
