@@ -1,4 +1,12 @@
 ---
+# install mackup config
+- name: register .mackup.cfg stat
+  stat: path="~/.mackup.cfg"
+  register: mackupcfg_stat
+- name: setup .mackup.cfg
+  copy: src="files/server/.mackup.cfg" dest="~"
+  when: not mackupcfg_stat.stat.exists
+
 - name: install brew applications for all users
   homebrew: name={{item}} state=latest
   with_items:
