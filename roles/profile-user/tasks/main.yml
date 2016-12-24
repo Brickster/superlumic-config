@@ -3,6 +3,7 @@
 - name: install cask applications for general users
   homebrew_cask: name={{item}} state=present
   with_items:
+    - downie
     - fantastical
     - google-chrome
     - omnifocus
