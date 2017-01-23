@@ -8,6 +8,7 @@
     - rsync
     - tccutil
     - the_silver_searcher
+    - vitorgalvao/tiny-scripts/cask-repair
 
 - name: install developer cask applications
   homebrew_cask: name={{item}} state=present
