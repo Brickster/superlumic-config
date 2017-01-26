@@ -31,3 +31,9 @@
 - name: set desktop background
   shell: osascript -e 'tell application "Finder" to set desktop picture to POSIX file "/Library/Desktop Pictures/Solid Colors/Solid Aqua Graphite.png"'
   changed_when: False
+
+- name: install python packages via pip
+  become: yes
+  pip: name={{item}}
+  with_items:
+    - speedtest-cli
