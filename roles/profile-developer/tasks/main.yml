@@ -10,6 +10,12 @@
     - the_silver_searcher
     - vitorgalvao/tiny-scripts/cask-repair
 
+# Code Climate tools
+- name: tap codeclimate/formulae repository
+  homebrew_tap: name=codeclimate/formulae
+- name: install Code Climate CLI
+  homebrew: name=codeclimate state=latest
+
 - name: install developer cask applications
   homebrew_cask: name={{item}} state=present
   with_items:
@@ -66,7 +72,7 @@
   become: yes
   pip: name={{item}}
   with_items:
-    - codacy-coverage
+    - codeclimate-test-reporter
     - colorama
     - coverage
     - isodate
