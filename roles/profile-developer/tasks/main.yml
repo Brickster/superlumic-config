@@ -4,6 +4,7 @@
   homebrew: name={{item}} state=latest
   with_items:
     - htop
+    - jq
     - nmap
     - rsync
     - tccutil
