@@ -52,8 +52,19 @@
       with_items:
         - files/.profile
 
+    # initialize SSH config options
     - name: create SSH directory
       file: path="~/.ssh" state=directory
+    - name: setup dot files
+      lineinfile:
+        dest: ~/.ssh/config
+        create: yes
+        state: present
+        line: "{{item}}"
+      with_items:
+        - "AddKeysToAgent yes"
+        - "UseKeychain yes"
+
     - name: register github_mini_rsa stat
       stat: path="~/.ssh/github_mini_rsa"
       register: github_mini_rsa_stat
