@@ -10,6 +10,7 @@ AuthorizedKeysFile	.ssh/authorized_keys
 # To disable tunneled clear text passwords both PasswordAuthentication and
 # ChallengeResponseAuthentication must be set to "no".
 PasswordAuthentication no
+PermitRootLogin no
 
 # Change to no to disable s/key passwords
 ChallengeResponseAuthentication no
