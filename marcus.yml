@@ -25,17 +25,17 @@
       copy:
         src: 'files/laptop.png'
         dest: '/Library/User Pictures'
-      when: profile_picture|changed
+      when: profile_picture is changed
     - name: delete JPEGPhoto setting
       shell: dscl . -delete "{{ lookup('env', 'HOME') }}" JPEGPhoto
-      when: profile_picture|changed
+      when: profile_picture is changed
     - name: delete Picture setting
       shell: dscl . -delete "{{ lookup('env', 'HOME') }}" Picture
-      when: profile_picture|changed
+      when: profile_picture is changed
     - name: set Picture setting
       become: true
       shell: dscl . -create "{{ lookup('env', 'HOME') }}" Picture '/Library/User Pictures/laptop.png'
-      when: profile_picture|changed
+      when: profile_picture is changed
 
     - name: create SSH directory
       file: path="~/.ssh" state=directory
