@@ -458,12 +458,12 @@
         # trackpad
         - domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad'
           key: 'Clicking'
-          type: boolean
-          value: true
+          type: integer
+          value: 1
         - domain: 'com.apple.AppleMultitouchTrackpad'
           key: 'Clicking'
-          type: boolean
-          value: true
+          type: integer
+          value: 1
         - domain: 'com.apple.dock'
           key: 'showAppExposeGestureEnabled'
           type: boolean
