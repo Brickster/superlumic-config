@@ -483,14 +483,19 @@
           type: integer
           value: 6
 
+    # install Mac App Store applications
+    - name: register Mac App Store account
+      shell: mas account
+      register: mas_account
+      changed_when: no
+      failed_when: no
     - name: register Mac App Store applications
       shell: mas list
       register: mas_list
-      changed_when: False
-
+      changed_when: no
     - name: install Mac App Store applications
       shell: mas install {{ item }}
-      when: "'{{ item }}' not in mas_list.stdout"
+      when: mas_account.rc == 0 and item not in mas_list.stdout
       with_items:
         - 1107421413  # 1blocker
         - 402355593   # chronicle
