@@ -272,16 +272,6 @@
       copy: src="files/.mackup.cfg" dest="~"
       when: not mackupcfg_stat.stat.exists
 
-    # set finder to not show hard disks
-    - name: register ShowHardDisks
-      shell: /usr/libexec/PlistBuddy -c "print :systemitems:ShowHardDisks" ~/Library/Preferences/com.apple.sidebarlists.plist
-      register: showharddisks_default
-      changed_when: false
-      ignore_errors: yes
-    - name: set ShowHardDisks
-      shell: /usr/libexec/PlistBuddy -c "set :systemitems:ShowHardDisks NO" ~/Library/Preferences/com.apple.sidebarlists.plist
-      when: showharddisks_default.stdout != 'NO'
-
     # set finder toolbar items
     - name: check for toolbar configuration dict
       shell: /usr/libexec/PlistBuddy -c "print :'NSToolbar Configuration Browser'" ~/Library/Preferences/com.apple.finder.plist
