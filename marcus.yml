@@ -462,22 +462,22 @@
         # swipe to navigate pages
         - domain: 'NSGlobalDomain'
           key: 'AppleEnableMouseSwipeNavigateWithScrolls'
-          type: integer
-          value: 1
+          type: boolean
+          value: true
 
         # trackpad
         - domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad'
           key: 'Clicking'
-          type: integer
-          value: 1
+          type: boolean
+          value: true
         - domain: 'com.apple.AppleMultitouchTrackpad'
           key: 'Clicking'
-          type: integer
-          value: 1
+          type: boolean
+          value: true
         - domain: 'com.apple.dock'
           key: 'showAppExposeGestureEnabled'
-          type: integer
-          value: 1
+          type: boolean
+          value: true
 
     - name: set OS X defaults for currentHost
       osx_defaults: host=currentHost domain={{ item.domain }} key={{ item.key }} type={{ item.type }} value={{ item.value }}
