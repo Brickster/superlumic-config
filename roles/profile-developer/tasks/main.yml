@@ -29,21 +29,24 @@
 - name: register Docker installed
   shell: which docker
   register: docker_location
+  changed_when: no
 - name: register Code Climate installed
   shell: brew list codeclimate
   register: codeclimate_installed
+  changed_when: no
+  failed_when: no
 - name: tap codeclimate/formulae repository
   homebrew_tap: name=codeclimate/formulae
-  when: docker_location.rc and not codeclimate_installed.rc
+  when: docker_location.rc == 0 and not codeclimate_installed.rc == 1
 - name: start Docker  # required to install Code Climate CLI
   shell: open --background -a Docker
-  when: docker_location.rc and not codeclimate_installed.rc
+  when: docker_location.rc == 0 and not codeclimate_installed.rc == 1
 - name: wait for Docker to start
   wait_for: timeout=60
-  when: docker_location.rc and not codeclimate_installed.rc
+  when: docker_location.rc == 0 and not codeclimate_installed.rc == 1
 - name: install Code Climate CLI
   homebrew: name=codeclimate state=latest
-  when: docker_location.rc and not codeclimate_installed.rc
+  when: docker_location.rc == 0 and not codeclimate_installed.rc == 1
 
 - name: install gems
   become: yes
