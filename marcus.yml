@@ -504,7 +504,6 @@
       with_items:
         - 1107421413  # 1blocker
         - 402355593   # chronicle
-        - 1059655371  # newton
         - 1026349850  # copied
         - 1055511498  # day one
         - 924726344   # deliveries
