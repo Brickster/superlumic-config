@@ -356,11 +356,6 @@
     - name: set OS X defaults
       osx_defaults: domain={{ item.domain }} key={{ item.key }} type={{ item.type }} value={{ item.value }}
       with_items:
-        # set tap-to-click
-        - domain: NSGlobalDomain
-          key: com.apple.mouse.tapBehavior
-          type: integer
-          value: 1
         # set output sound when changing volume
         - domain: NSGlobalDomain
           key: com.apple.sound.beep.feedback
@@ -454,15 +449,16 @@
           type: integer
           value: 0
 
-        # set mouse settings
-        - domain: 'com.apple.driver.AppleHIDMouse'
-          key: 'Button2'
-          type: integer
-          value: 2
-        - domain: 'com.apple.driver.AppleHIDMouse'
-          key: 'ButtonDominance'
-          type: integer
-          value: 1
+        # set mouse settings --------------------------------------
+        # right click
+        - domain: 'com.apple.AppleMultitouchMouse'
+          key: 'MouseButtonMode'
+          type: string
+          value: 'TwoButton'
+        - domain: 'com.apple.driver.AppleBluetoothMultitouch.mouse'
+          key: 'MouseButtonMode'
+          type: string
+          value: 'TwoButton'
 
         # trackpad
         - domain: 'com.apple.driver.AppleBluetoothMultitouch.trackpad'
