@@ -12,7 +12,7 @@
   vars:
     - computername: Air
     - git_user_name: Marcus Rosenow
-    - git_user_email: Brickstertwo@users.noreply.github.com
+    - git_user_email: 2048345+Brickster@users.noreply.github.com
 
   tasks:
     # set profile picture
