@@ -11,12 +11,6 @@
     - the_silver_searcher
     - vitorgalvao/tiny-scripts/cask-repair
 
-# Code Climate tools
-- name: tap codeclimate/formulae repository
-  homebrew_tap: name=codeclimate/formulae
-- name: install Code Climate CLI
-  homebrew: name=codeclimate state=latest
-
 - name: install developer cask applications
   homebrew_cask: name={{item}} state=present
   with_items:
@@ -30,6 +24,26 @@
     - pycharm-ce
     - renamer
     - transmit
+
+# Code Climate tools
+- name: register Docker installed
+  shell: which docker
+  register: docker_location
+- name: register Code Climate installed
+  shell: brew list codeclimate
+  register: codeclimate_installed
+- name: tap codeclimate/formulae repository
+  homebrew_tap: name=codeclimate/formulae
+  when: docker_location.rc and not codeclimate_installed.rc
+- name: start Docker  # required to install Code Climate CLI
+  shell: open --background -a Docker
+  when: docker_location.rc and not codeclimate_installed.rc
+- name: wait for Docker to start
+  wait_for: timeout=60
+  when: docker_location.rc and not codeclimate_installed.rc
+- name: install Code Climate CLI
+  homebrew: name=codeclimate state=latest
+  when: docker_location.rc and not codeclimate_installed.rc
 
 - name: install gems
   become: yes
