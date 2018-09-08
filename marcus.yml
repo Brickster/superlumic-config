@@ -505,7 +505,7 @@
         - 497799835   # xcode
 
     - name: clone third party git repositories
-      git: repo={{item.repo}}.git dest={{item.dest}}
+      git: repo={{item.repo}} dest={{item.dest}}
       with_items:
         - repo: https://github.com/Cortys/comic-backup.git
           dest: ~/Development/third-party/comics-backup
