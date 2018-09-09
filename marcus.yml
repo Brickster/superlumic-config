@@ -224,7 +224,11 @@
         dest: ~/.ssh/config
         create: yes
         state: present
-        line: IdentityFile ~/.ssh/github_pro_rsa
+        line: |
+          IdentityFile ~/.ssh/github_pro_rsa
+
+          Host *
+            UseKeychain yes
       when: not github_pro_rsa_stat.stat.exists
     - name: add github key to ssh
       shell: ssh-add ~/.ssh/github_pro_rsa
