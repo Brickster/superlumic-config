@@ -495,7 +495,7 @@
       changed_when: no
     - name: install Mac App Store applications
       shell: mas install {{ item }}
-      when: mas_account.rc == 0 and item not in mas_list.stdout
+      when: mas_account.rc == 0 and item|string not in mas_list.stdout
       with_items:
         - 1107421413  # 1blocker
         - 402355593   # chronicle
