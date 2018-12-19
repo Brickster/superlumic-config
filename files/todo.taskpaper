@@ -1,0 +1,40 @@
+TOFIX:
+	- Install Chrome into /Applications
+	- Install 1Password into /Applications
+
+Cosmetic:
+	- Set background wallpaper found: /usr/local/superlumic/config/files/wallpaper
+
+iCloud:
+	- Turn off Mail
+	- Turn off Keychain
+	- Turn off "Optimize Mac Storage": iCloud > Options...
+	- Turn off "Desktop & Documents Folders" sync: iCloud > Options...
+
+Displays:
+	- Arrange displays
+	- Do not show in menu bar
+
+Security & Privacy:
+	- Require password timeout
+
+Sound:
+	- Show sound in menu bar
+
+Users & Groups:
+	- Turn off guest user
+	- Add Login items:
+		- Launchbar
+
+Spotlight:
+	- Turn off shortcut: Keyboard Shortcuts... > Spotlight > Show Spotlight search
+
+Notifications:
+	- Do Not Disturb
+		- Turn on "When the display is sleeping"
+
+Applications:
+	- Sync dropbox
+	- Launchbar
+		- Turn off clipboard shortcut
+	- 1Password
